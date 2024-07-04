@@ -25,10 +25,13 @@ RC_ICONS = myico.ico
 CONFIG += c++11
 
 SOURCES += \
+        human.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
+        config.h \
+        human.h \
         mainwindow.h
 
 FORMS += \
@@ -38,3 +41,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    source.qrc
+
+DISTFILES +=
