@@ -44,15 +44,49 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     switch(event->key())
     {
 
-        case Qt::Key_S:man.goleft = false;man.goright = false;man.stop = true;break;
-        case Qt::Key_A:man.goleft = true;man.goright = false;man.stop = false;break;
-        case Qt::Key_D:man.goleft = false;man.goright = true;man.stop = false;break;
-        case Qt::Key_Space:
+        //case Qt::Key_S:break;
+        case Qt::Key_A:
         {
-            man.jump_time.start();
-            man.fall_counter = 1;
+
+
+                man.goleft = true;
+
             break;
         }
+        case Qt::Key_D:
+        {
 
+                man.goright = true;
+
+            break;
+        }
+        case Qt::Key_Space:
+        {
+            //跳了零次或者跳了一次了
+            if(man.jump_counter < 2)
+            {
+                man.jump_time.start();
+                man.fall_counter = 1;
+                man.jump_counter ++;
+                break;
+            }
+        }
+    }
+}
+void MainWindow::keyReleaseEvent(QKeyEvent* event)
+{
+
+    switch(event->key())
+    {
+        case Qt::Key_A:
+        {
+            man.goleft = false;
+            break;
+        }
+        case Qt::Key_D:
+        {
+            man.goright= false;
+            break;
+        }
     }
 }

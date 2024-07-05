@@ -3,17 +3,16 @@
 #include "mainwindow.h"
 #include <QDebug>
 Human::Human(){
-    goleft = false;
-    goright = false;
-    stop = true;
     x = 500;
     y = 750;
-    moveSize = 4;
     height = 100;
     length = 100;
     human.load(":/human1.png");
     jump_time.setInterval(JUMP_DURATION);
     jump_time.setSingleShot(true);
+    jump_counter = 0;
+    goleft = false;
+    goright = false;
 }
 void Human::jump()
 {
@@ -30,18 +29,17 @@ void Human::jump()
         {
             y = Ui::LineY - height;
             fall_counter = 1;
+            jump_counter = 0;
         }
 
     }
 }
 void Human::move()
 {
-    if(goleft == true)
+    if(goleft == true && goright == true)
     {
-        x -= moveSize;
+        return ;
     }
-    else if(goright == true)
-    {
-        x += moveSize;
-    }
+    if(goleft == true)x -= MOVE_SIZE;
+    else if(goright == true)x += MOVE_SIZE;
 }

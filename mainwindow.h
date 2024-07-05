@@ -23,6 +23,7 @@ public:
     //按键处理
     QPixmap background;
     void keyPressEvent(QKeyEvent*);
+    void keyReleaseEvent(QKeyEvent*);
     Human man;
 
 private:
