@@ -6,4 +6,8 @@
 #define GAME_RATE 8
 #define GAME_ACCELERATION 0.003
 #define MOVE_SIZE 5
+#define LIFEBAR_X 50
+#define LIFEBAR_Y 50
+#define LIFEBAR_LENGTH 500
+#define LIFEBAR_HEIGHT 50
 #endif // CONFIG_H

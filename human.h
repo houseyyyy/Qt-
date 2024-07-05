@@ -15,11 +15,14 @@ public:
     int y; // y坐标
     int length; //小人横向长度
     int height; //小人纵向长度
-    void move(); //移动函数
-    void jump(); // 人物跳越
     int jump_counter;//记录已经跳跃次数
     bool goleft;
     bool goright;
+    QRect lifebar; //血条的边框
+    QRect blood; // 血条
+    void move(); //移动函数
+    void jump(); // 人物跳越
+    int remainblood;//剩余的血量
 };
 
 #endif // HUMAN_H

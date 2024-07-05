@@ -13,6 +13,9 @@ Human::Human(){
     jump_counter = 0;
     goleft = false;
     goright = false;
+    //血条
+    lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+    blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
 }
 void Human::jump()
 {

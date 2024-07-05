@@ -36,7 +36,16 @@ void MainWindow::paintEvent(QPaintEvent*)
     painter.drawPixmap(0,0,Ui::sizeOfRow,Ui::sizeOfColumn,background);
     painter.setPen(pen);
     painter.drawLine(QPoint(0,Ui::LineY),QPoint(Ui::sizeOfRow,Ui::LineY));
-    painter.drawPixmap(man.x,man.y,man.height,man.length,man.human);  
+    painter.drawPixmap(man.x,man.y,man.height,man.length,man.human);
+
+    pen.setWidth(2);
+    pen.setColor(QColor(255,255,255));
+    painter.setPen(pen);
+    painter.drawRect(man.lifebar);
+
+    pen.setColor(QColor(255,0,0));
+    painter.setBrush(QBrush(Qt::red,Qt::SolidPattern));
+    painter.drawRect(man.blood);
     painter.end();
 }
 void MainWindow::keyPressEvent(QKeyEvent* event)
