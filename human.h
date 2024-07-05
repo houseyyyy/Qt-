@@ -12,6 +12,7 @@ public:
     bool goleft;
     bool goright;
     bool stop;
+    QTimer move_time; //移动计时器
     QTimer jump_time; //跳跃计时器
     int fall_counter; // 下落逐差法
     int x; // x坐标

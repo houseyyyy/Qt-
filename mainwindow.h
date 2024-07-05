@@ -19,10 +19,12 @@ public:
     void paintEvent(QPaintEvent*);
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    //按键处理
     QTimer mytime;
+    //按键处理
+    QPixmap background;
     void keyPressEvent(QKeyEvent*);
     Human man;
+
 private:
     Ui::MainWindow *ui;
 
