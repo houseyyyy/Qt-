@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QPainter>
 #include <QPen>
-#include "human.h"
+#include "Human.h"
 #include <QKeyEvent>
 #include "config.h"
 
@@ -12,42 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setFixedSize(Ui::sizeOfRow,Ui::sizeOfColumn);
-    this->setWindowTitle("超级牛马");
     background.load(":/background.jpg");
-    mytime.setInterval(GAME_RATE);
-    connect(&mytime,&QTimer::timeout,[this]()
-    {
-        update();
-        man.jump();
-        man.move();
-    });
-    mytime.start();
+    mytime->setInterval(GAME_RATE);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::paintEvent(QPaintEvent*)
-{
-    QPen pen(QColor(166,156,242));
-    pen.setWidth(10);
-    QPainter painter(this);
-    painter.drawPixmap(0,0,Ui::sizeOfRow,Ui::sizeOfColumn,background);
-    painter.setPen(pen);
-    painter.drawLine(QPoint(0,Ui::LineY),QPoint(Ui::sizeOfRow,Ui::LineY));
-    painter.drawPixmap(man.x,man.y,man.height,man.length,man.human);
 
-    pen.setWidth(2);
-    pen.setColor(QColor(255,255,255));
-    painter.setPen(pen);
-    painter.drawRect(man.lifebar);
-
-    pen.setColor(QColor(255,0,0));
-    painter.setBrush(QBrush(Qt::red,Qt::SolidPattern));
-    painter.drawRect(man.blood);
-    painter.end();
-}
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     switch(event->key())
@@ -58,25 +31,25 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         {
 
 
-                man.goleft = true;
+                player1->goleft = true;
 
             break;
         }
         case Qt::Key_D:
         {
 
-                man.goright = true;
+                player1->goright = true;
 
             break;
         }
         case Qt::Key_Space:
         {
             //跳了零次或者跳了一次了
-            if(man.jump_counter < 2)
+            if(player1->jump_counter < 2)
             {
-                man.jump_time.start();
-                man.fall_counter = 1;
-                man.jump_counter ++;
+                player1->jump_time.start();
+                player1->fall_counter = 1;
+                player1->jump_counter ++;
                 break;
             }
         }
@@ -89,13 +62,107 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
     {
         case Qt::Key_A:
         {
-            man.goleft = false;
+            player1->goleft = false;
             break;
         }
         case Qt::Key_D:
         {
-            man.goright= false;
+            player1->goright= false;
             break;
         }
     }
+}
+//加载玩家一和玩家二
+void MainWindow::loadPlayer2(QString ip,QString port)
+{
+    this->setWindowTitle("Player 2");
+    client=new Client();
+    client->Connect(ip,port);
+
+    player2=new Human(1);
+    player1=new Human(2);
+    GameInit();
+
+    //开启游戏主循环2
+    mytime=new QTimer;
+    connect(mytime,&QTimer::timeout,this,&MainWindow::GameLoop2);
+    mytime->start();
+}
+void MainWindow::loadPlayer1(int port)
+{
+    this->setWindowTitle("Player 1");
+    server=new Server();
+    server->Connect(port);
+
+    player2 = new Human(2);
+    player1 = new Human(1);
+    GameInit();
+
+    //开启游戏主循环1
+    mytime = new QTimer;
+    connect(mytime,&QTimer::timeout,this,&MainWindow::GameLoop1);
+    mytime->start();
+}
+//背景和线
+
+void MainWindow::GameInit()
+{
+
+    QPen pen(QColor(166,156,242));
+    QPainter painter(this);
+     painter.setPen(pen);
+    //画背景
+    painter.drawPixmap(0,0,Ui::sizeOfRow,Ui::sizeOfColumn,background);
+    pen.setWidth(10);
+    //画线
+    painter.drawLine(QPoint(0,Ui::LineY),QPoint(Ui::sizeOfRow,Ui::LineY));
+    painter.end();
+
+}
+//玩家一主循环
+void MainWindow::GameLoop1()
+{
+    server->sendData(player1->x,player1->y);
+    player2->moveOther(server->x,server->y);
+    sameLoop();
+}
+//玩家二主循环
+void MainWindow::GameLoop2()
+{
+    client->sendData(player1->x,player1->y);
+    player2->moveOther(client->x,client->y);
+    sameLoop();
+}
+//通用循环
+void MainWindow::sameLoop()
+{
+
+    update();
+    player1->jump();
+    player1->move();
+
+    QPen pen(QColor(166,156,242));
+    QPainter painter(this);
+     painter.setPen(pen);
+    //画背景
+    painter.drawPixmap(0,0,Ui::sizeOfRow,Ui::sizeOfColumn,background);
+    pen.setWidth(10);
+    //画线
+    painter.drawLine(QPoint(0,Ui::LineY),QPoint(Ui::sizeOfRow,Ui::LineY));
+    //画人物---
+    painter.drawPixmap(player1->x,player1->y,player1->height,player1->length,player1->human);
+
+    //血条框
+    pen.setWidth(2);
+    pen.setColor(QColor(255,255,255));
+    painter.setPen(pen);
+    painter.drawRect(player1->lifebar);
+    //画血条
+    pen.setColor(QColor(255,0,0));
+    painter.setBrush(QBrush(Qt::red,Qt::SolidPattern));
+    painter.drawRect(player1->blood);
+
+    painter.end();
+
+
 }

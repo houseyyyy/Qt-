@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT       += network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = fire
@@ -25,16 +25,23 @@ RC_ICONS = myico.ico
 CONFIG += c++11
 
 SOURCES += \
+        client.cpp \
+        gamemenu.cpp \
         human.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        server.cpp
 
 HEADERS += \
+        Human.h \
+        client.h \
         config.h \
-        human.h \
-        mainwindow.h
+        gamemenu.h \
+        mainwindow.h \
+        server.h
 
 FORMS += \
+        gamemenu.ui \
         mainwindow.ui
 
 # Default rules for deployment.

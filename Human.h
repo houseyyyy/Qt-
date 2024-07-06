@@ -7,8 +7,12 @@
 class Human
 {
 public:
+    //创建玩家1和2的角色
+    void loadHuman1();
+    void loadHuman2();
+
     QPixmap human;
-    Human();
+    Human(int);
     QTimer jump_time; //跳跃计时器
     int fall_counter; // 下落逐差法的N
     int x; // x坐标
@@ -21,6 +25,7 @@ public:
     QRect lifebar; //血条的边框
     QRect blood; // 血条
     void move(); //移动函数
+    void moveOther(int ,int );
     void jump(); // 人物跳越
     int remainblood;//剩余的血量
 };

@@ -1,18 +1,42 @@
-#include "human.h"
+#include "Human.h"
 #include "config.h"
 #include "mainwindow.h"
 #include <QDebug>
-Human::Human(){
-    x = 500;
-    y = 750;
+Human::Human(int Num){
     height = 100;
-    length = 100;
-    human.load(":/human1.png");
+    length = 100; 
     jump_time.setInterval(JUMP_DURATION);
     jump_time.setSingleShot(true);
     jump_counter = 0;
     goleft = false;
     goright = false;
+    if(Num == 1)loadHuman1();
+    else loadHuman2();
+
+}
+void Human::moveOther(int X,int Y)
+{
+    x = X;
+    y = Y;
+}
+//设置玩家一的角色
+void Human::loadHuman1()
+{
+    x = 500;
+    y = 750;
+    //人物图片---
+    human.load(":/human1.png");
+    //血条
+    lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+    blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+}
+//设置玩家二的角色
+void Human::loadHuman2()
+{
+    x = 500;
+    y = 750;
+    //人物图片---
+    human.load(":/human1.png");
     //血条
     lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
     blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
