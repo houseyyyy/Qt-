@@ -1,35 +1,34 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GAMEENGINE_H
+#define GAMEENGINE_H
 
-#include <QMainWindow>
+#include <QWidget>
 #include "Human.h"
 #include <QTimer>
 #include "server.h"
 #include "client.h"
 
 namespace Ui {
-class MainWindow;
+class GameEngine;
 const int sizeOfRow = 1500;
 const int sizeOfColumn = 1000;
 const int LineY = 850;
 }
 
-class MainWindow : public QMainWindow
+class GameEngine : public QWidget
 {
     Q_OBJECT
 private slots:
     void GameLoop1();
     void GameLoop2();
 public:
+    explicit GameEngine(QWidget *parent = nullptr);
+    ~GameEngine();
+
     //登录
     void loadPlayer1(int port);
     void loadPlayer2(QString ip,QString port);
-    // void StartGame();
     void GameInit();
     void sameLoop();
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-
     Human* player1;
     Human* player2;
     QPixmap background;
@@ -40,9 +39,10 @@ public:
 
     Server *server;
     Client *client;
+
 private:
-    Ui::MainWindow *ui;
+    Ui::GameEngine *ui;
     QTimer* mytime;
 };
 
-#endif // MAINWINDOW_H
+#endif // GAMEENGINE_H

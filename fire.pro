@@ -26,23 +26,23 @@ CONFIG += c++11
 
 SOURCES += \
         client.cpp \
+        gameengine.cpp \
         gamemenu.cpp \
         human.cpp \
         main.cpp \
-        mainwindow.cpp \
         server.cpp
 
 HEADERS += \
         Human.h \
         client.h \
         config.h \
+        gameengine.h \
         gamemenu.h \
-        mainwindow.h \
         server.h
 
 FORMS += \
-        gamemenu.ui \
-        mainwindow.ui
+        gameengine.ui \
+        gamemenu.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

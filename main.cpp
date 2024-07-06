@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "gameengine.h"
 #include <QApplication>
 #include "gamemenu.h"
 

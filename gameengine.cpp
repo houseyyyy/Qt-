@@ -1,27 +1,23 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "gameengine.h"
+#include "ui_gameengine.h"
 #include <QPainter>
 #include <QPen>
 #include "Human.h"
 #include <QKeyEvent>
 #include "config.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+GameEngine::GameEngine(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::GameEngine)
 {
     ui->setupUi(this);
-    this->setFixedSize(Ui::sizeOfRow,Ui::sizeOfColumn);
-    background.load(":/background.jpg");
-    mytime->setInterval(GAME_RATE);
 }
 
-MainWindow::~MainWindow()
+GameEngine::~GameEngine()
 {
     delete ui;
 }
-
-void MainWindow::keyPressEvent(QKeyEvent* event)
+void GameEngine::keyPressEvent(QKeyEvent* event)
 {
     switch(event->key())
     {
@@ -55,7 +51,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         }
     }
 }
-void MainWindow::keyReleaseEvent(QKeyEvent* event)
+void GameEngine::keyReleaseEvent(QKeyEvent* event)
 {
 
     switch(event->key())
@@ -73,7 +69,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
     }
 }
 //加载玩家一和玩家二
-void MainWindow::loadPlayer2(QString ip,QString port)
+void GameEngine::loadPlayer2(QString ip,QString port)
 {
     this->setWindowTitle("Player 2");
     client=new Client();
@@ -85,10 +81,10 @@ void MainWindow::loadPlayer2(QString ip,QString port)
 
     //开启游戏主循环2
     mytime=new QTimer;
-    connect(mytime,&QTimer::timeout,this,&MainWindow::GameLoop2);
+    connect(mytime,&QTimer::timeout,this,&GameEngine::GameLoop2);
     mytime->start();
 }
-void MainWindow::loadPlayer1(int port)
+void GameEngine::loadPlayer1(int port)
 {
     this->setWindowTitle("Player 1");
     server=new Server();
@@ -100,12 +96,12 @@ void MainWindow::loadPlayer1(int port)
 
     //开启游戏主循环1
     mytime = new QTimer;
-    connect(mytime,&QTimer::timeout,this,&MainWindow::GameLoop1);
+    connect(mytime,&QTimer::timeout,this,&GameEngine::GameLoop1);
     mytime->start();
 }
 //背景和线
 
-void MainWindow::GameInit()
+void GameEngine::GameInit()
 {
 
     QPen pen(QColor(166,156,242));
@@ -120,21 +116,21 @@ void MainWindow::GameInit()
 
 }
 //玩家一主循环
-void MainWindow::GameLoop1()
+void GameEngine::GameLoop1()
 {
     server->sendData(player1->x,player1->y);
     player2->moveOther(server->x,server->y);
     sameLoop();
 }
 //玩家二主循环
-void MainWindow::GameLoop2()
+void GameEngine::GameLoop2()
 {
     client->sendData(player1->x,player1->y);
     player2->moveOther(client->x,client->y);
     sameLoop();
 }
 //通用循环
-void MainWindow::sameLoop()
+void GameEngine::sameLoop()
 {
 
     update();

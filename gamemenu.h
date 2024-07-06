@@ -2,7 +2,7 @@
 #define GAMEMENU_H
 
 #include <QWidget>
-#include "mainwindow.h"
+#include "gameengine.h"
 namespace Ui {
 class GameMenu;
 }
@@ -20,7 +20,7 @@ private slots:
     void on_clientStart_clicked();
 private:
     Ui::GameMenu *ui;
-    MainWindow *game;
+    GameEngine *game;
 };
 
 #endif // GAMEMENU_H

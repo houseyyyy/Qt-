@@ -1,6 +1,6 @@
 #include "Human.h"
 #include "config.h"
-#include "mainwindow.h"
+#include "gameengine.h"
 #include <QDebug>
 Human::Human(int Num){
     height = 100;
