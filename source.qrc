@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>human1.png</file>
         <file>background.jpg</file>
+        <file>human2.png</file>
     </qresource>
 </RCC>

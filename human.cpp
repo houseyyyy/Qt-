@@ -36,7 +36,7 @@ void Human::loadHuman2()
     x = 500;
     y = 750;
     //人物图片---
-    human.load(":/human1.png");
+    human.load(":/human2.png");
     //血条
     lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
     blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);

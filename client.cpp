@@ -21,6 +21,15 @@ void Client::receiveData()
     // QByteArray
     QByteArray array=socket.readAll();
     //待完成   把array里面的数据读下来
+    int data[2];
+    for (int i=0; i<3; i++)
+    {
+        int unTemp;
+        memcpy(&unTemp, array.data() + sizeof(int) * i, sizeof(int));
+        data[i] = unTemp;
+    }
+    x=data[0];
+    y=data[1];
 }
 
 //发送数据

@@ -23,12 +23,11 @@ private slots:
 public:
     explicit GameEngine(QWidget *parent = nullptr);
     ~GameEngine();
-
+    void paintEvent(QPaintEvent*);
     //登录
     void loadPlayer1(int port);
     void loadPlayer2(QString ip,QString port);
     void GameInit();
-    void sameLoop();
     Human* player1;
     Human* player2;
     QPixmap background;
