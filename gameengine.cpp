@@ -24,8 +24,6 @@ void GameEngine::paintEvent(QPaintEvent*)
     player1->jump();
     player1->move();
 
-    player2->jump();
-    player2->move();
     QPen pen(QColor(166,156,242));
     QPainter painter(this);
      painter.setPen(pen);
@@ -59,8 +57,6 @@ void GameEngine::keyPressEvent(QKeyEvent* event)
         //case Qt::Key_S:break;
         case Qt::Key_A:
         {
-
-
                 player1->goleft = true;
 
             break;
@@ -122,13 +118,12 @@ void GameEngine::loadPlayer2(QString ip,QString port)
 void GameEngine::loadPlayer1(int port)
 {
     this->setWindowTitle("Player 1");
-    server=new Server();
+    server=new Server;
     server->Connect(port);
 
     player2 = new Human(2);
     player1 = new Human(1);
-    //GameInit();
-    update();
+    //update();
     //开启游戏主循环1
     mytime = new QTimer;
     mytime->setInterval(GAME_RATE);
@@ -137,11 +132,6 @@ void GameEngine::loadPlayer1(int port)
 }
 //背景和线
 
-void GameEngine::GameInit()
-{
-    //
-
-}
 //玩家一主循环
 void GameEngine::GameLoop1()
 {
@@ -154,5 +144,6 @@ void GameEngine::GameLoop2()
 {
     client->sendData(player1->x,player1->y);
     player2->moveOther(client->x,client->y);
+    //qDebug() << client->x << client-> y;
     update();
 }

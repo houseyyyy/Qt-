@@ -10,7 +10,7 @@ public:
     explicit Client();
     bool Connect(QString ip,QString port);
     void sendData(int x,int y); //？？？？
-    void getdata();
+    void getdata();//没写
     //对方数据
     int x;
     int y;

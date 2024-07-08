@@ -11,7 +11,7 @@ Human::Human(int Num){
     goleft = false;
     goright = false;
     if(Num == 1)loadHuman1();
-    else loadHuman2();
+    else if(Num == 2) loadHuman2();
 
 }
 void Human::moveOther(int X,int Y)
@@ -27,19 +27,19 @@ void Human::loadHuman1()
     //人物图片---
     human.load(":/human1.png");
     //血条
-    lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
-    blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+    /*lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+    blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);*/
 }
 //设置玩家二的角色
 void Human::loadHuman2()
 {
-    x = 500;
+    x = 400;
     y = 750;
     //人物图片---
     human.load(":/human2.png");
     //血条
-    lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
-    blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+    /*lifebar.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);
+    blood.setRect(LIFEBAR_X,LIFEBAR_Y,LIFEBAR_LENGTH,LIFEBAR_HEIGHT);*/
 }
 void Human::jump()
 {

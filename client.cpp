@@ -1,6 +1,9 @@
 #include "client.h"
 #include <QString>
-Client::Client(){};
+Client::Client(){
+    x = 500;
+    y = 750;
+};
 
 //连接
 bool Client::Connect(QString ip,QString port)
@@ -22,7 +25,7 @@ void Client::receiveData()
     QByteArray array=socket.readAll();
     //待完成   把array里面的数据读下来
     int data[2];
-    for (int i=0; i<3; i++)
+    for (int i=0; i<2; i++)
     {
         int unTemp;
         memcpy(&unTemp, array.data() + sizeof(int) * i, sizeof(int));

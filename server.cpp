@@ -3,6 +3,8 @@
 Server::Server(QObject *parent)
     : QTcpServer{parent}
 {
+    x = 400;
+    y = 750;
 }
 
 //开启监听
@@ -23,7 +25,7 @@ void Server::receiveData()
     // QByteArray
     QByteArray array=socket.readAll();
     int data[2];
-    for (int i=0; i<3; i++)
+    for (int i=0; i<2; i++)
     {
         int unTemp;
         memcpy(&unTemp, array.data() + sizeof(int) * i, sizeof(int));
