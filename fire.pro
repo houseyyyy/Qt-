@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += network
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = fire
@@ -23,8 +24,9 @@ RC_ICONS = myico.ico
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += c++11
-
+CONFIG += resources_big
 SOURCES += \
+        box.cpp \
         client.cpp \
         gameengine.cpp \
         gamemenu.cpp \
@@ -34,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
         Human.h \
+        box.h \
         client.h \
         config.h \
         gameengine.h \

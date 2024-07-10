@@ -21,8 +21,12 @@ GameEngine::~GameEngine()
 }
 void GameEngine::paintEvent(QPaintEvent*)
 {
+
     player1->jump();
     player1->move();
+    player1->attack(player2,KIND_NORMAL);
+    player1->attack(player2,KIND_SKILL);
+    player1->attack(player2,KIND_BIG);
 
     QPen pen(QColor(166,156,242));
     QPainter painter(this);
@@ -33,7 +37,7 @@ void GameEngine::paintEvent(QPaintEvent*)
     //画线
     painter.drawLine(QPoint(0,Ui::LineY),QPoint(Ui::sizeOfRow,Ui::LineY));
     //画人物---
-    painter.drawPixmap(player1->x,player1->y,player1->height,player1->length,player1->human);
+    painter.drawPixmap(player1->x,player1->y,player1->height,player1->length,player1->getImg());
     painter.drawPixmap(player2->x,player2->y,player2->height,player2->length,player2->human);
 
 /*  //血条框
@@ -78,7 +82,43 @@ void GameEngine::keyPressEvent(QKeyEvent* event)
                 player1->jump_counter ++;
                 break;
             }
+            break;
         }
+        //以下是玩家技能按键  J x轴大的攻击  K 技能  L 瞬移  S 防御  I 大招
+        case Qt::Key_J:
+        {
+            player1->normal_attacking_time.start();
+            break;
+        }
+        case Qt::Key_K:
+        {
+            player1->skill_attacking_time.start();
+            break;
+        }
+        case Qt::Key_I:
+        {
+            player1->big_attacking_time.start();
+            break;
+        }
+        case Qt::Key_S:
+        {
+            player1->defence();
+            break;
+        }
+        case Qt::Key_L:
+        {
+            //待做
+            /*if(player1->left==true)
+            {
+                player1->x-=100;//距离乱写的
+            }
+            else if(player1->right==true)
+            {
+                player1->x+=100;
+            }*/
+            break;
+        }
+
     }
 }
 void GameEngine::keyReleaseEvent(QKeyEvent* event)
@@ -93,7 +133,12 @@ void GameEngine::keyReleaseEvent(QKeyEvent* event)
         }
         case Qt::Key_D:
         {
-            player1->goright= false;
+            player1->goright = false;
+            break;
+        }
+        case Qt::Key_S:
+        {
+            player1->isdefence = false;
             break;
         }
     }
@@ -136,6 +181,20 @@ void GameEngine::loadPlayer1(int port)
 void GameEngine::GameLoop1()
 {
     server->sendData(player1->x,player1->y);
+    /*player1->manbox.setbox(player1->x,player1->y,player1->x+HUMAN_LENGTH,player1->y+HUMAN_HEIGHT);
+    player2->manbox.setbox(server->x,server->y,server->x+HUMAN_LENGTH,server->y+HUMAN_HEIGHT);
+    if(player1->left==true)
+    {
+        player1->Jrange.setbox(player1->x-100,player1->y,player1->x,player1->y);
+        player1->Krange.setbox(player1->x-100,player1->y,player1->x,player1->y);
+        player1->Irange.setbox(player1->x-100,player1->y,player1->x,player1->y);;//朝左时人物的攻击范围，我先给你随便写个范围
+    }
+    else if(player1->right==true)
+    {
+        player1->Jrange.setbox(player1->x,player1->y,player1->x+100,player1->y);
+        player1->Krange.setbox(player1->x,player1->y,player1->x+100,player1->y);
+        player1->Irange.setbox(player1->x,player1->y,player1->x+100,player1->y);;//朝右时人物的攻击范围，我先给你随便写个范围
+    }*/
     player2->moveOther(server->x,server->y);
     update();
 }
@@ -144,6 +203,6 @@ void GameEngine::GameLoop2()
 {
     client->sendData(player1->x,player1->y);
     player2->moveOther(client->x,client->y);
-    //qDebug() << client->x << client-> y;
+    //qDebug() << client->x << client->y;
     update();
 }

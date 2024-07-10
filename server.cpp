@@ -29,6 +29,7 @@ void Server::receiveData()
     {
         int unTemp;
         memcpy(&unTemp, array.data() + sizeof(int) * i, sizeof(int));
+        //qDebug() << unTemp <<" \n"[i == 1];
         data[i] = unTemp;
     }
     x=data[0];
@@ -39,8 +40,8 @@ void Server::sendData(int x,int y)
 {
     if(isConnected){
         QByteArray array;
-        array.append(QChar(x));
-        array.append(QChar(y));
+        int self[] = {x,y};
+        array.append((char*)self,sizeof(int) * 2);
         socket.write(array);
     }
 }

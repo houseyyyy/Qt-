@@ -1,0 +1,12 @@
+release/qrc_source.o
+release/box.o
+release/client.o
+release/gameengine.o
+release/gamemenu.o
+release/human.o
+release/main.o
+release/server.o
+release/moc_client.o
+release/moc_gameengine.o
+release/moc_gamemenu.o
+release/moc_server.o

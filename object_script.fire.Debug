@@ -1,0 +1,12 @@
+debug/qrc_source.o
+debug/box.o
+debug/client.o
+debug/gameengine.o
+debug/gamemenu.o
+debug/human.o
+debug/main.o
+debug/server.o
+debug/moc_client.o
+debug/moc_gameengine.o
+debug/moc_gamemenu.o
+debug/moc_server.o

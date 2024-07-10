@@ -39,8 +39,8 @@ void Client::receiveData()
 void Client::sendData(int x,int y)
 {
     QByteArray array;
-    array.append(QChar(x));
-    array.append(QChar(y));
+    int self[] = {x,y};
+    array.append((char*)self,sizeof(int)* 2);
     socket.write(array);
 }
 
