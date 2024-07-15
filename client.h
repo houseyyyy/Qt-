@@ -1,6 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include "Human.h"
 #include <QTcpSocket>
 
 class Client: public QObject
@@ -9,11 +10,9 @@ class Client: public QObject
 public:
     explicit Client();
     bool Connect(QString ip,QString port);
-    void sendData(int x,int y); //？？？？
+    void sendData(Human*); //？？？？
     void getdata();//没写
-    //对方数据
-    int x;
-    int y;
+    Human* player;
 private slots:
     void receiveData();
 private:

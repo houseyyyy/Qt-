@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += network
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,6 +27,7 @@ RC_ICONS = myico.ico
 CONFIG += c++11
 CONFIG += resources_big
 SOURCES += \
+        QtSplashScreen.cpp \
         box.cpp \
         client.cpp \
         gameengine.cpp \
@@ -36,6 +38,7 @@ SOURCES += \
 
 HEADERS += \
         Human.h \
+        QtSplashScreen.h \
         box.h \
         client.h \
         config.h \
@@ -53,6 +56,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    source.qrc
+    resources.qrc
 
 DISTFILES +=

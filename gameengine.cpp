@@ -6,13 +6,21 @@
 #include <QKeyEvent>
 #include "config.h"
 
+
 GameEngine::GameEngine(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GameEngine)
 {
     ui->setupUi(this);
     resize(Ui::sizeOfRow,Ui::sizeOfColumn);
-    background.load(":/background.jpg");
+    background.load(":/pic/background.jpg");
+    lob1.load(":/pic/lob.png");
+    floor.load(":/pic/floor.png");
+    lifebar.load(":/pic/lifebar.png");
+    bgm->setMedia(QUrl("qrc:/audio/audio/bgm/1.mp3"));//设置音乐的资源文件
+    bgm->setVolume(50);//音量
+    lob->setMedia(QUrl("qrc:/audio/audio/bgm/lob.mp3"));//设置音乐的资源文件
+    lob->setVolume(50);//音量
 }
 
 GameEngine::~GameEngine()
@@ -21,35 +29,62 @@ GameEngine::~GameEngine()
 }
 void GameEngine::paintEvent(QPaintEvent*)
 {
-
     player1->jump();
     player1->move();
     player1->attack(player2,KIND_NORMAL);
     player1->attack(player2,KIND_SKILL);
     player1->attack(player2,KIND_BIG);
+    player1->changebox1();
 
+    if(player2->remainblood<= 0||player1->remainblood<=0)gameover();
     QPen pen(QColor(166,156,242));
     QPainter painter(this);
      painter.setPen(pen);
     //画背景
     painter.drawPixmap(0,0,Ui::sizeOfRow,Ui::sizeOfColumn,background);
+    painter.drawPixmap(0,1000,Ui::sizeOfRow,400,floor);
     pen.setWidth(10);
     //画线
-    painter.drawLine(QPoint(0,Ui::LineY),QPoint(Ui::sizeOfRow,Ui::LineY));
     //画人物---
-    painter.drawPixmap(player1->x,player1->y,player1->height,player1->length,player1->getImg());
-    painter.drawPixmap(player2->x,player2->y,player2->height,player2->length,player2->human);
+    if(ischanged==false)
+    {
+        painter.drawPixmap(player1->x - player1->px,player1->y - player1->py,player1->height,player1->length,player1->getImg1());
+        painter.drawPixmap(player2->x - player2->px,player2->y - player2->py,player2->height,player2->length,player2->getImg2());
+    }
+    else
+    {
+        painter.drawPixmap(player1->x - player1->px,player1->y - player1->py,player1->height,player1->length,player1->getImg2());
+        painter.drawPixmap(player2->x - player2->px,player2->y - player2->py,player2->height,player2->length,player2->getImg1());
+    }
 
-/*  //血条框
+    //血条框
     pen.setWidth(2);
-    pen.setColor(QColor(255,255,255));
+    pen.setColor(QColor(0,0,0));
     painter.setPen(pen);
     painter.drawRect(player1->lifebar);
+    painter.drawRect(player2->lifebar);
+    painter.drawPixmap(0,50,500,50,lifebar);
+    painter.drawPixmap(1420,50,500,50,lifebar);
+
     //画血条
-    pen.setColor(QColor(255,0,0));
-    painter.setBrush(QBrush(Qt::red,Qt::SolidPattern));
+    pen.setColor(QColor(82,82,82));
+    painter.setBrush(QBrush(QColor(135,135,135,80)));
+    painter.setBrush(QBrush(Qt::Dense3Pattern));
+   // player1-> blood.setRect(0,55,player2->remainblood*5,40);
+   // player2-> blood.setRect(1920-player1->remainblood*5,55,player1->remainblood*5,40);
+    if(ischanged==false)
+    {
+        player1-> blood.setRect(0,55,player2->remainblood*5,40);
+        player2-> blood.setRect(1920-player1->remainblood*5,55,player1->remainblood*5,40);
+    }
+    else
+    {
+        player2-> blood.setRect(0,55,player1->remainblood*5,40);
+        player1-> blood.setRect(1920-player2->remainblood*5,55,player2->remainblood*5,40);
+    }
+
     painter.drawRect(player1->blood);
-*/
+    painter.drawRect(player2->blood);
 
     painter.end();
 }
@@ -57,8 +92,6 @@ void GameEngine::keyPressEvent(QKeyEvent* event)
 {
     switch(event->key())
     {
-
-        //case Qt::Key_S:break;
         case Qt::Key_A:
         {
                 player1->goleft = true;
@@ -146,10 +179,11 @@ void GameEngine::keyReleaseEvent(QKeyEvent* event)
 //加载玩家一和玩家二
 void GameEngine::loadPlayer2(QString ip,QString port)
 {
+    ischanged=true;
     this->setWindowTitle("Player 2");
     client=new Client();
     client->Connect(ip,port);
-
+    bgm->play();
     player2=new Human(1);
     player1=new Human(2);
     //GameInit();
@@ -162,47 +196,48 @@ void GameEngine::loadPlayer2(QString ip,QString port)
 }
 void GameEngine::loadPlayer1(int port)
 {
+    ischanged=false;
+    bgm->play();
     this->setWindowTitle("Player 1");
     server=new Server;
     server->Connect(port);
 
     player2 = new Human(2);
     player1 = new Human(1);
-    //update();
     //开启游戏主循环1
     mytime = new QTimer;
     mytime->setInterval(GAME_RATE);
     connect(mytime,&QTimer::timeout,this,&GameEngine::GameLoop1);
     mytime->start();
 }
-//背景和线
 
 //玩家一主循环
 void GameEngine::GameLoop1()
 {
-    server->sendData(player1->x,player1->y);
-    /*player1->manbox.setbox(player1->x,player1->y,player1->x+HUMAN_LENGTH,player1->y+HUMAN_HEIGHT);
-    player2->manbox.setbox(server->x,server->y,server->x+HUMAN_LENGTH,server->y+HUMAN_HEIGHT);
-    if(player1->left==true)
+    server->sendData(player1);
+    if(server->isConnected)
     {
-        player1->Jrange.setbox(player1->x-100,player1->y,player1->x,player1->y);
-        player1->Krange.setbox(player1->x-100,player1->y,player1->x,player1->y);
-        player1->Irange.setbox(player1->x-100,player1->y,player1->x,player1->y);;//朝左时人物的攻击范围，我先给你随便写个范围
+    player2->setOtherplayer(server->player);
+    //player1->remainblood =server->player->remainblood;
     }
-    else if(player1->right==true)
-    {
-        player1->Jrange.setbox(player1->x,player1->y,player1->x+100,player1->y);
-        player1->Krange.setbox(player1->x,player1->y,player1->x+100,player1->y);
-        player1->Irange.setbox(player1->x,player1->y,player1->x+100,player1->y);;//朝右时人物的攻击范围，我先给你随便写个范围
-    }*/
-    player2->moveOther(server->x,server->y);
     update();
 }
 //玩家二主循环
 void GameEngine::GameLoop2()
 {
-    client->sendData(player1->x,player1->y);
-    player2->moveOther(client->x,client->y);
-    //qDebug() << client->x << client->y;
+    client->sendData(player1);
+    player2->setOtherplayer(client->player);
+   // player1->remainblood =client->player->remainblood;
     update();
+}
+
+void GameEngine::gameover()
+{
+    QWidget* over = new QWidget;
+    bgm->stop();
+    lob->play();
+    over->resize(1288,798);
+    over->setStyleSheet("border-image:url(:/pic/lob.png)");
+    this->hide();
+    over->show();
 }

@@ -1,6 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include "Human.h"
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -13,14 +14,14 @@ class Server : public QTcpServer
 public:
     explicit Server(QObject *parent = nullptr);
     void Connect(int port);
-    void sendData(int x,int y);//??????
+    void sendData(Human*);
 
-    int x;
-    int y;
+    Human* player;
     //存client的数据
+    bool isConnected=0;
+
 private:
     QTcpSocket socket;    
-    bool isConnected=0;
 
 private slots:
     void incomingConnection(qintptr handle);

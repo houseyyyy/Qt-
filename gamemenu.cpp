@@ -28,3 +28,5 @@ void GameMenu::on_clientStart_clicked()
     game->show();
     this->hide();
 }
+
+

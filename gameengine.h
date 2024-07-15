@@ -4,14 +4,15 @@
 #include <QWidget>
 #include "Human.h"
 #include <QTimer>
+#include <QMediaPlayer>
 #include "server.h"
 #include "client.h"
 
 namespace Ui {
 class GameEngine;
-const int sizeOfRow = 1500;
-const int sizeOfColumn = 1000;
-const int LineY = 850;
+const int sizeOfRow = 1920;
+const int sizeOfColumn = 1080;
+const int LineY = 1000;
 }
 
 class GameEngine : public QWidget
@@ -21,6 +22,7 @@ private slots:
     void GameLoop1();
     void GameLoop2();
 public:
+    void gameover();
     explicit GameEngine(QWidget *parent = nullptr);
     ~GameEngine();
     void paintEvent(QPaintEvent*);
@@ -28,9 +30,15 @@ public:
     void loadPlayer1(int port);
     void loadPlayer2(QString ip,QString port);
 
+    bool ischanged;
     Human* player1;
     Human* player2;
+    QPixmap floor;
     QPixmap background;
+    QPixmap lob1;
+    QPixmap lifebar,blood;
+    QMediaPlayer*lob=new QMediaPlayer(this);
+    QMediaPlayer*bgm=new QMediaPlayer(this);
     //按键处理
     void keyPressEvent(QKeyEvent*);
     void keyReleaseEvent(QKeyEvent*);
